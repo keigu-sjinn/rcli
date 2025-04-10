@@ -40,7 +40,7 @@ fn verify_input_file(file_name: &str) -> Result<String, String> {
     if Path::new(file_name).exists() {
         Ok(file_name.to_owned())
     } else {
-        Err(format!("{} does NOT exist", file_name))
+        Err(format!("`{}` does NOT exist", file_name))
     }
 }
 
@@ -48,6 +48,6 @@ fn verify_delimiter(delimiter: &str) -> Result<char, String> {
     if delimiter.len() == 1 {
         Ok(delimiter.chars().next().unwrap())
     } else {
-        Err(format!("{} is not a valid delimiter", delimiter))
+        Err(format!("`{}` is not a valid delimiter", delimiter))
     }
 }
