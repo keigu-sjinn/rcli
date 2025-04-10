@@ -2,7 +2,7 @@
 name = "rcli"
 version = "0.1.0"
 edition = "2024"
-description = "A Rust project."
+description = "A Rust tools for converting file formats with CLI."
 
 authors = ["Min Cai <min.cai.gj@fujifilm.com>"]
 readme = "README.md"
