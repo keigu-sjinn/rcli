@@ -1,0 +1,13 @@
+[package]
+name = "rcli"
+version = "0.1.0"
+edition = "2024"
+description = "A Rust project."
+
+authors = ["Min Cai <min.cai.gj@fujifilm.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+
+[dependencies]
+anyhow = "1"
+thiserror = "2.0"
