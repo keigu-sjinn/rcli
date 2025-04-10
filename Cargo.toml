@@ -10,4 +10,4 @@ license = "Apache-2.0"
 
 [dependencies]
 anyhow = "1"
-thiserror = "2.0"
+hiserror = "2.0"
