@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. See [conven
 ---
 ## [unreleased]
 
+### Bug Fixes
+
+- fix `no color output on windows` bug - ([40342c8](https://github.com/keigu-sjinn/rcli/commit/40342c8434058ba9b04482be8d14fa330846c9a0)) - keigu-sjinn
+
 ### Other
 
 - first commit - ([a18adb5](https://github.com/keigu-sjinn/rcli/commit/a18adb559e03d179f0d80b31ad669f53d8124551)) - keigu-sjinn

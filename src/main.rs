@@ -11,7 +11,7 @@ use clap::{
 #[derive(Debug, Parser)]
 #[command(name="rcli",version, about, long_about = None,color = clap::ColorChoice::Always,
 styles = Styles::styled()
-.header(anstyle::Style::new().fg_color(Some(AnsiColor::BrightCyan.into())).effects(Effects::BOLD)) // 标题
+.header(anstyle::Style::new().fg_color(Some(AnsiColor::BrightGreen.into())).effects(Effects::BOLD)) // 标题
 .usage(Style::new().fg_color(Some(AnsiColor::BrightGreen.into())).effects(Effects::BOLD)) // 用法
 .literal(Style::new().fg_color(Some(AnsiColor::BrightCyan.into())).effects(Effects::BOLD)) // 字面量
 .placeholder(Style::new().fg_color(Some(AnsiColor::BrightBlue.into()))) // 占位符
