@@ -7,7 +7,7 @@ use clap::{
     Args, Parser, Subcommand,
     builder::{Styles, styling::Style},
 };
-use colored::Colorize;
+
 #[derive(Debug, Parser)]
 #[command(name="rcli",version, about, long_about = None,color = clap::ColorChoice::Always,
 styles = Styles::styled()
@@ -45,6 +45,7 @@ struct CsvArgs {
 fn main() {
     // 启用Windows终端的彩色支持
     #[cfg(windows)]
+    use colored::Colorize;
     let _ = colored::control::set_virtual_terminal(true);
     // 强制启用颜色输出
     colored::control::set_override(true);
