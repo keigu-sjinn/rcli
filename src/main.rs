@@ -45,17 +45,16 @@ struct CsvArgs {
 fn main() {
     // 启用Windows终端的彩色支持
     #[cfg(windows)]
-    use colored::Colorize;
-    let _ = colored::control::set_virtual_terminal(true);
-    // 强制启用颜色输出
-    colored::control::set_override(true);
+    enable_windows_colors();
 
     let cli = Cli::parse();
     println!("{:#?}", cli);
+}
 
-    println!("{}", "这是红色文本".red());
-    println!("{}", "这是绿色文本".green());
-    println!("{}", "这是蓝色文本".blue());
+#[cfg(windows)]
+fn enable_windows_colors() {
+    let _ = colored::control::set_virtual_terminal(true);
+    colored::control::set_override(true);
 }
 
 fn verify_input_file(file_name: &str) -> Result<String, String> {
