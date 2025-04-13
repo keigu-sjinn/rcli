@@ -34,7 +34,7 @@ struct CsvArgs {
     input: String,
     /// CSV file has header or not
     #[arg(short, long, default_value = "true")]
-    header: Option<bool>,
+    header: bool,
     /// Set the delimiter
     #[arg(short,long, default_value = ",", value_parser = verify_delimiter)]
     delimiter: char,
