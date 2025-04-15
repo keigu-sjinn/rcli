@@ -2,3 +2,6 @@
 /.idea/*
 Cargo.lock
 /.vscode/*
+/assets/*
+*.csv
+*.log
