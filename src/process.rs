@@ -80,8 +80,12 @@ fn crate_output_file(output: &str, vec_data: &Vec<Value>, fmt: OutputFormat) -> 
             )?
         }
         OutputFormat::Yaml => serde_yaml::to_string(vec_data)
-            .with_context(|| "Failed to convert string from json value")?,
-        OutputFormat::Toml => todo!(),
+            .with_context(|| "Failed to convert yaml from json value")?,
+        OutputFormat::Toml => {
+            let root = serde_json::json!({"data": vec_data});
+            toml::to_string_pretty(&root)
+                .with_context(|| "Failed to convert toml from json value")?
+        }
         OutputFormat::Xml => todo!(),
     };
     fs::write(file_path.clone(), content)
