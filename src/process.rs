@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::{fs, path::PathBuf, vec};
 
 use anyhow::{Context, anyhow};
 use csv::StringRecord;
@@ -79,7 +79,8 @@ fn crate_output_file(output: &str, vec_data: &Vec<Value>, fmt: OutputFormat) -> 
                     .with_context(|| "Failed to flush the CSV writer")?,
             )?
         }
-        OutputFormat::Yaml => todo!(),
+        OutputFormat::Yaml => serde_yaml::to_string(vec_data)
+            .with_context(|| "Failed to convert string from json value")?,
         OutputFormat::Toml => todo!(),
         OutputFormat::Xml => todo!(),
     };
