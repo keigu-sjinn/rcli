@@ -1,17 +1,18 @@
 use clap::Parser;
 use rcli::{Cli, process::process_csv, subcmd::SubCmds};
-fn main() {
+fn main() -> anyhow::Result<()> {
     // 启用Windows终端的彩色支持
     #[cfg(windows)]
     enable_windows_colors();
 
     let cli = Cli::parse();
-    // println!("{:#?}", cli);
+
+    println!("{:#?}", cli);
+
     match cli.sub_cmd {
-        SubCmds::Csv(opts) => {
-            process_csv(opts);
-        }
+        SubCmds::Csv(opts) => process_csv(opts)?,
     }
+    Ok(())
 }
 
 #[cfg(windows)]

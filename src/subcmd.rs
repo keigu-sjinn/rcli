@@ -11,8 +11,6 @@ use std::{
 
 use clap::{Args, Subcommand};
 
-use crate::CliError;
-
 #[derive(Debug, Subcommand)]
 pub enum SubCmds {
     /// Show CSV, or covert CSV to other formats
@@ -33,7 +31,7 @@ pub struct CsvArgs {
         default_missing_value = DEFAULT_INPUT_FILE,
         num_args=0..=1,
     )]
-    pub input: Vec<String>,
+    pub input: String,
 
     /// CSV file has header or not
     #[arg(
@@ -44,7 +42,7 @@ pub struct CsvArgs {
         default_missing_value=DEFAULT_HEADER,
         num_args=0..=1
     )]
-    header: bool,
+    pub header: bool,
 
     /// Set the delimiter
     #[arg(
@@ -67,7 +65,7 @@ pub struct CsvArgs {
         value_parser=verify_output_file,
         num_args=0..=1
     )]
-    output: String,
+    pub output: String,
     // /// Set the format of the output file
     // #[arg(
     //     short,
@@ -82,7 +80,7 @@ pub struct CsvArgs {
 }
 
 #[derive(Debug, Clone, Copy)]
-enum OutputFormat {
+pub enum OutputFormat {
     Json,
     Csv,
     Yaml,
@@ -103,19 +101,18 @@ impl From<OutputFormat> for &'static str {
 }
 
 impl FromStr for OutputFormat {
-    type Err = CliError;
+    type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_ascii_lowercase().as_str() {
+        let file_ext = s.to_lowercase();
+        match file_ext.as_str() {
             "json" => Ok(OutputFormat::Json),
             "csv" => Ok(OutputFormat::Csv),
             "yaml" => Ok(OutputFormat::Yaml),
             "yml" => Ok(OutputFormat::Yaml),
             "toml" => Ok(OutputFormat::Toml),
             "xml" => Ok(OutputFormat::Xml),
-            fmt => Err(CliError::FromStrError {
-                formatter: fmt.to_owned(),
-            }),
+            fmt => Err(anyhow::anyhow!("`{}` is not a unsupported format", fmt)),
         }
     }
 }

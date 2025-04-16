@@ -4,7 +4,6 @@ pub mod subcmd;
 use anstyle::{AnsiColor, Effects, Style};
 use clap::{Parser, builder::Styles};
 use subcmd::SubCmds;
-use thiserror::Error;
 
 #[derive(Debug, Parser)]
 #[command(name="rcli",version, about, long_about = None,color = clap::ColorChoice::Always,
@@ -18,10 +17,4 @@ styles = Styles::styled()
 pub struct Cli {
     #[command(subcommand)]
     pub sub_cmd: SubCmds,
-}
-
-#[derive(Debug, Error)]
-enum CliError {
-    #[error("`{formatter}` is not a unsupported format")]
-    FromStrError { formatter: String },
 }

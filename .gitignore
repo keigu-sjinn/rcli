@@ -5,3 +5,8 @@ Cargo.lock
 /assets/*
 *.csv
 *.log
+*.json
+*.toml
+*.lock
+*.yaml
+*.yml
