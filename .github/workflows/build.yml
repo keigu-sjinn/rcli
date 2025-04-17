@@ -40,7 +40,6 @@ jobs:
       - name: Execute rust tests
         run: cargo nextest run --all-features --no-tests warn
       - name: Generate a changelog
-        runs-on: ubuntu-latest
         uses: orhun/git-cliff-action@v2
         id: git-cliff
         if: startsWith(github.ref, 'refs/tags/')
