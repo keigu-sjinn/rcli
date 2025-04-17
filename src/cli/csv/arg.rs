@@ -10,7 +10,7 @@ use super::{DEFAULT_DELIMITER, DEFAULT_HEADER, DEFAULT_INPUT_FILE, DEFAULT_OUTPU
 #[derive(Debug, Args)]
 pub struct CsvArgs {
     #[arg(
-        help=format!("Input file path [default is `{}`]", DEFAULT_INPUT_FILE),
+        help=format!("Input file path"),
         required = true,
         short,
         long,

@@ -1,7 +1,15 @@
 use clap::Parser;
 use rcli::{
     Cli,
-    cli::{SubCmds, csv::process::process_csv, genpwd::process::process_genpwd},
+    cli::{
+        SubCmds,
+        base64::{
+            arg::Base64SubCmds,
+            process::{process_base64_decode, process_base64_encode},
+        },
+        csv::process::process_csv,
+        genpwd::process::process_genpwd,
+    },
 };
 fn main() -> anyhow::Result<()> {
     // 启用Windows终端的彩色支持
@@ -15,6 +23,16 @@ fn main() -> anyhow::Result<()> {
         SubCmds::GenPwd(opts) => {
             process_genpwd(opts.length, opts.uppercase, opts.number, opts.symbol)?
         }
+
+        SubCmds::Base64(bs64subcomd) => match bs64subcomd {
+            Base64SubCmds::Encode(encode_args) => {
+                process_base64_encode(&encode_args.input, &encode_args.formatter)?
+            }
+
+            Base64SubCmds::Decode(decode_args) => {
+                process_base64_decode(&decode_args.input, &decode_args.formatter)?
+            }
+        },
     }
     Ok(())
 }
