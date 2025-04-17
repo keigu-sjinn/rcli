@@ -4,18 +4,27 @@ use anyhow::{Context, anyhow};
 use csv::StringRecord;
 use serde_json::Value;
 
-use super::arg::{CsvArgs, OutputFormat};
+use super::arg::OutputFormat;
 
-pub fn process_csv(opts: CsvArgs) -> anyhow::Result<()> {
-    let fmt = get_output_formatter(&opts.output)?;
-    let mut reader = csv::Reader::from_path(&opts.input)
-        .with_context(|| format!("Failed to read the CSV file `{}`", &opts.input))?;
+pub fn process_csv(
+    input: String,
+    header: bool,
+    delimiter: char,
+    output: String,
+) -> anyhow::Result<()> {
+    let fmt = get_output_formatter(&output)?;
+    let mut reader = csv::ReaderBuilder::new()
+        .delimiter(delimiter.to_string().as_bytes()[0])
+        .has_headers(header)
+        .from_path(&input)
+        .with_context(|| format!("Failed to read the CSV file `{}`", &input))?;
+
     let mut vec_rcds: Vec<Value> = Vec::with_capacity(128);
     let first_row = reader
         .headers()
-        .with_context(|| format!("Failed to get header of this CSV file `{}`", opts.input))?;
+        .with_context(|| format!("Failed to get header of this CSV file `{}`", &input))?;
     let headers;
-    if !opts.header {
+    if !header {
         // without header
         headers = first_row
             .clone()
@@ -35,7 +44,7 @@ pub fn process_csv(opts: CsvArgs) -> anyhow::Result<()> {
         let json_value: Value = headers.iter().zip(result.iter()).collect();
         vec_rcds.push(json_value);
     }
-    crate_output_file(&opts.output, &vec_rcds, fmt)?;
+    crate_output_file(&output, &vec_rcds, fmt)?;
     Ok(())
 }
 
@@ -71,8 +80,8 @@ fn crate_output_file(output: &str, vec_data: &Vec<Value>, fmt: OutputFormat) -> 
                     }
                 }
             }
-            // wtr.flush()
-            //     .with_context(|| format!("Failed to flush the CSV writer"))?;
+            wtr.flush()
+                .with_context(|| "Failed to flush the CSV writer")?;
 
             String::from_utf8(
                 wtr.into_inner()

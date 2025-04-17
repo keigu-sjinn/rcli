@@ -9,7 +9,6 @@ use super::{DEFAULT_DELIMITER, DEFAULT_HEADER, DEFAULT_INPUT_FILE, DEFAULT_OUTPU
 
 #[derive(Debug, Args)]
 pub struct CsvArgs {
-    /// Input file path
     #[arg(
         help=format!("Input file path [default is `{}`]", DEFAULT_INPUT_FILE),
         required = true,
@@ -43,7 +42,7 @@ pub struct CsvArgs {
         value_parser=verify_delimiter,
         num_args=0..=1
     )]
-    delimiter: char,
+    pub delimiter: char,
 
     /// Output file path
     #[arg(
@@ -56,17 +55,6 @@ pub struct CsvArgs {
         num_args=0..=1
     )]
     pub output: String,
-    // /// Set the format of the output file
-    // #[arg(
-    //     short,
-    //     long,
-    //     default_value = "json",
-    //     default_missing_value = "json",
-    //     value_name = "FORMAT",
-    //     value_parser = verify_fmt_output,
-    //     num_args=0..=1
-    // )]
-    // format: OutputFormat,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -135,6 +123,7 @@ fn verify_delimiter(delimiter: &str) -> Result<char, String> {
     if delimiter.is_empty() {
         return Err("Delimiter can NOT be empty".to_owned());
     }
+
     if delimiter.chars().count() == 1 {
         Ok(delimiter.chars().next().unwrap())
     } else {
@@ -148,7 +137,7 @@ fn verify_delimiter(delimiter: &str) -> Result<char, String> {
 fn verify_header(header: &str) -> Result<bool, String> {
     header.parse::<bool>().map_err(|_| {
         format!(
-            "`{}` is not a valid boolean value, please use `true` or `false`",
+            "`{}` is not a valid boolean value, please input `true` or `false`",
             header
         )
     })
