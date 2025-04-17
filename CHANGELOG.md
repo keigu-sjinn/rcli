@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. See [conven
 ---
 ## [unreleased]
 
+### Bug Fixes
+
+- fix workflows/build.yml bug - ([5980b1d](https://github.com/keigu-sjinn/rcli/commit/5980b1deeed275d7e4b80ec3bb10e36319af3d42)) - keigu-sjinn
+
 ### Other
 
 - modify action .github/workflows/build - ([2132502](https://github.com/keigu-sjinn/rcli/commit/2132502518f225c26ad002d038891ce7c9820df3)) - keigu-sjinn
