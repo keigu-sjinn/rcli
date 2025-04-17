@@ -4,7 +4,7 @@ use anyhow::{Context, anyhow};
 use csv::StringRecord;
 use serde_json::Value;
 
-use crate::subcmd::{CsvArgs, OutputFormat};
+use super::arg::{CsvArgs, OutputFormat};
 
 pub fn process_csv(opts: CsvArgs) -> anyhow::Result<()> {
     let fmt = get_output_formatter(&opts.output)?;

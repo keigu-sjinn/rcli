@@ -1,22 +1,12 @@
-const DEFAULT_INPUT_FILE: &str = "assets/user_list.csv";
-const DEFAULT_HEADER: &str = "true";
-const DEFAULT_DELIMITER: &str = ",";
-const DEFAULT_OUTPUT_FILE: &str = "output.json";
-
 use std::{
-    fmt::Debug,
     path::{Path, PathBuf},
     str::FromStr,
 };
 
-use clap::{Args, Subcommand};
+use clap::{Args, arg};
 
-#[derive(Debug, Subcommand)]
-pub enum SubCmds {
-    /// Show CSV, or covert CSV to other formats
-    #[command(name = "csv", arg_required_else_help = true, disable_help_flag = true)]
-    Csv(CsvArgs),
-}
+use super::{DEFAULT_DELIMITER, DEFAULT_HEADER, DEFAULT_INPUT_FILE, DEFAULT_OUTPUT_FILE};
+
 #[derive(Debug, Args)]
 pub struct CsvArgs {
     /// Input file path
@@ -163,10 +153,3 @@ fn verify_header(header: &str) -> Result<bool, String> {
         )
     })
 }
-
-// fn verify_fmt_output(fmt: &str) -> Result<OutputFormat, String> {
-//     match fmt.parse() {
-//         Ok(f) => Ok(f),
-//         Err(e) => Err(e.to_string()),
-//     }
-// }

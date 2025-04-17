@@ -1,9 +1,8 @@
-pub mod process;
-pub mod subcmd;
+pub mod cli;
 
 use anstyle::{AnsiColor, Effects, Style};
 use clap::{Parser, builder::Styles};
-use subcmd::SubCmds;
+use cli::SubCmds;
 
 #[derive(Debug, Parser)]
 #[command(name="rcli",version, about, long_about = None,color = clap::ColorChoice::Always,
