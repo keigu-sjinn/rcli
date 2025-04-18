@@ -4,7 +4,7 @@ use anyhow::{Context, anyhow};
 use csv::StringRecord;
 use serde_json::Value;
 
-use super::arg::OutputFormat;
+use super::arg::OutputFormatter;
 
 pub fn process_csv(
     input: String,
@@ -48,13 +48,17 @@ pub fn process_csv(
     Ok(())
 }
 
-fn crate_output_file(output: &str, vec_data: &Vec<Value>, fmt: OutputFormat) -> anyhow::Result<()> {
+fn crate_output_file(
+    output: &str,
+    vec_data: &Vec<Value>,
+    fmt: OutputFormatter,
+) -> anyhow::Result<()> {
     let file_path = PathBuf::from(output);
     let content = match fmt {
-        OutputFormat::Json => serde_json::to_string_pretty(vec_data)
+        OutputFormatter::Json => serde_json::to_string_pretty(vec_data)
             .with_context(|| "Failed to convert json `Value` to String")?,
 
-        OutputFormat::Csv => {
+        OutputFormatter::Csv => {
             let mut wtr = csv::WriterBuilder::new().from_writer(vec![]);
             if let Some(first_row) = vec_data.first() {
                 if let Some(obj) = first_row.as_object() {
@@ -88,26 +92,26 @@ fn crate_output_file(output: &str, vec_data: &Vec<Value>, fmt: OutputFormat) -> 
                     .with_context(|| "Failed to flush the CSV writer")?,
             )?
         }
-        OutputFormat::Yaml => serde_yaml::to_string(vec_data)
+        OutputFormatter::Yaml => serde_yaml::to_string(vec_data)
             .with_context(|| "Failed to convert yaml from json value")?,
-        OutputFormat::Toml => {
+        OutputFormatter::Toml => {
             let root = serde_json::json!({"data": vec_data});
             toml::to_string_pretty(&root)
                 .with_context(|| "Failed to convert toml from json value")?
         }
-        OutputFormat::Xml => todo!(),
+        OutputFormatter::Xml => todo!(),
     };
     fs::write(file_path.clone(), content)
         .with_context(|| format!("Failed to Write data in CSV file `{}`", file_path.display()))
 }
 
-fn get_output_formatter(output: &str) -> anyhow::Result<OutputFormat> {
+fn get_output_formatter(output: &str) -> anyhow::Result<OutputFormatter> {
     let file_path = PathBuf::from(output);
 
     let opt_file_ext = file_path.extension().and_then(|ext| ext.to_str());
     let file_ext = match opt_file_ext {
         None => return Err(anyhow!("Invalid file extension".to_string())),
-        Some(ext) => ext.parse::<OutputFormat>()?,
+        Some(ext) => ext.parse::<OutputFormatter>()?,
     };
     Ok(file_ext)
 }

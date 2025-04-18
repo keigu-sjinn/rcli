@@ -45,7 +45,6 @@ footer = """
 # remove the leading and trailing whitespace from the templates
 trim = true
 # postprocessors
-# *必须修改对应的地址*
 postprocessors = [
     { pattern = '\$REPO', replace = "https://github.com/keigu-sjinn/rcli" }, # replace repository URL
 ]

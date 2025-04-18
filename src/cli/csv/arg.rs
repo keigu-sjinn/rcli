@@ -1,4 +1,5 @@
 use std::{
+    fmt,
     path::{Path, PathBuf},
     str::FromStr,
 };
@@ -58,7 +59,7 @@ pub struct CsvArgs {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum OutputFormat {
+pub enum OutputFormatter {
     Json,
     Csv,
     Yaml,
@@ -66,32 +67,38 @@ pub enum OutputFormat {
     Xml,
 }
 
-impl From<OutputFormat> for &'static str {
-    fn from(value: OutputFormat) -> Self {
+impl From<OutputFormatter> for &'static str {
+    fn from(value: OutputFormatter) -> Self {
         match value {
-            OutputFormat::Json => "json",
-            OutputFormat::Csv => "csv",
-            OutputFormat::Yaml => "yaml",
-            OutputFormat::Toml => "toml",
-            OutputFormat::Xml => "xml",
+            OutputFormatter::Json => "json",
+            OutputFormatter::Csv => "csv",
+            OutputFormatter::Yaml => "yaml",
+            OutputFormatter::Toml => "toml",
+            OutputFormatter::Xml => "xml",
         }
     }
 }
 
-impl FromStr for OutputFormat {
+impl FromStr for OutputFormatter {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let file_ext = s.to_lowercase();
         match file_ext.as_str() {
-            "json" => Ok(OutputFormat::Json),
-            "csv" => Ok(OutputFormat::Csv),
-            "yaml" => Ok(OutputFormat::Yaml),
-            "yml" => Ok(OutputFormat::Yaml),
-            "toml" => Ok(OutputFormat::Toml),
-            "xml" => Ok(OutputFormat::Xml),
+            "json" => Ok(OutputFormatter::Json),
+            "csv" => Ok(OutputFormatter::Csv),
+            "yaml" => Ok(OutputFormatter::Yaml),
+            "yml" => Ok(OutputFormatter::Yaml),
+            "toml" => Ok(OutputFormatter::Toml),
+            "xml" => Ok(OutputFormatter::Xml),
             fmt => Err(anyhow::anyhow!("`{}` is not a unsupported format", fmt)),
         }
+    }
+}
+
+impl fmt::Display for OutputFormatter {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", Into::<&'static str>::into(*self))
     }
 }
 
@@ -114,7 +121,9 @@ fn verify_output_file(file_name: &str) -> Result<String, String> {
     let opt_file_ext = file_path.extension().and_then(|ext| ext.to_str());
     let file_ext = match opt_file_ext {
         None => return Err("Invalid file extension".to_string()),
-        Some(ext) => ext.parse::<OutputFormat>().map_err(|err| err.to_string())?,
+        Some(ext) => ext
+            .parse::<OutputFormatter>()
+            .map_err(|err| err.to_string())?,
     };
     // Ok(format!("{}.{}", file_stem, file_ext.into()));
     Ok(format!("{}.{}", file_stem, <&str>::from(file_ext)))

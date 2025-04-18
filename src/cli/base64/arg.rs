@@ -1,4 +1,4 @@
-use std::{path::Path, str::FromStr};
+use std::{fmt, path::Path, str::FromStr};
 
 use clap::{Args, Subcommand, command};
 
@@ -114,5 +114,11 @@ impl FromStr for Base64Formatter {
             "urlsafe" => Ok(Base64Formatter::UrlSafe),
             _ => Err(anyhow::anyhow!("Invalid base64 formatter")),
         }
+    }
+}
+
+impl fmt::Display for Base64Formatter {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", Into::<&'static str>::into(*self))
     }
 }

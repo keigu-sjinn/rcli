@@ -81,15 +81,15 @@ repos:
       #   language: rust
       #   files: Cargo\.toml
       #   pass_filenames: false
-      - id: git-cliff
-        name: Generate changelog
-        description: Use git-cliff to generate a changelog
-        entry: git-cliff
-        args: [--config, cliff.toml, --output, CHANGELOG.md, --unreleased]
-        language: system
-        pass_filenames: false
-        always_run: true
-      # - id: add-changelog
+      # - id: git-cliff
+      #   name: Generate changelog
+      #   description: Use git-cliff to generate a changelog
+      #   entry: git-cliff
+      #   args: [--config, cliff.toml, --output, CHANGELOG.md, --unreleased]
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: true
+      # # - id: add-changelog
       #   name: Add changelog to staging
       #   description: Add generated CHANGELOG.md to git staging area
       #   entry: git add CHANGELOG.md
